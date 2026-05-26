@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>硬體視覺診斷助手</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, sans-serif; background: #0f1117; color: #e0e0e0; min-height: 100vh; }
+
+    header {
+      background: #1a1d27;
+      border-bottom: 1px solid #2a2d3e;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    header h1 { font-size: 18px; font-weight: 600; color: #fff; }
+    header .badge { background: #3b82f6; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 99px; }
+
+    .layout { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 20px; max-width: 1400px; margin: 0 auto; }
+
+    .card {
+      background: #1a1d27;
+      border: 1px solid #2a2d3e;
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .card h2 { font-size: 14px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; }
+
+    /* 上傳區 */
+    .upload-zone {
+      border: 2px dashed #2a2d3e;
+      border-radius: 8px;
+      padding: 40px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .upload-zone:hover, .upload-zone.dragover { border-color: #3b82f6; }
+    .upload-zone .icon { font-size: 40px; margin-bottom: 12px; }
+    .upload-zone p { color: #64748b; font-size: 14px; }
+    .upload-zone input { display: none; }
+
+    #preview-img {
+      width: 100%;
+      border-radius: 8px;
+      margin-top: 12px;
+      display: none;
+      position: relative;
+    }
+    #preview-container { position: relative; display: inline-block; width: 100%; }
+    canvas#bbox-canvas {
+      position: absolute;
+      top: 0; left: 0;
+      pointer-events: none;
+    }
+
+    /* 按鈕 */
+    .btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: opacity 0.2s;
+      width: 100%;
+      margin-top: 12px;
+    }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-primary { background: #3b82f6; color: #fff; }
+    .btn-success { background: #22c55e; color: #fff; }
+    .btn-warning { background: #f59e0b; color: #fff; }
+    .btn-primary:hover:not(:disabled) { opacity: 0.85; }
+    .btn-success:hover:not(:disabled) { opacity: 0.85; }
+
+    /* 組件列表 */
+    .component-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+    .component-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #0f1117;
+      border: 1px solid #2a2d3e;
+      border-radius: 8px;
+      padding: 10px 14px;
+    }
+    .component-item.confirmed { border-color: #22c55e; }
+    .comp-id { font-weight: 700; color: #3b82f6; min-width: 40px; font-size: 13px; }
+    .comp-type { flex: 1; font-size: 13px; }
+    .comp-conf { font-size: 11px; color: #64748b; }
+    .comp-check {
+      width: 20px; height: 20px;
+      border-radius: 4px;
+      border: 2px solid #2a2d3e;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px;
+      transition: all 0.15s;
+    }
+    .comp-check.checked { background: #22c55e; border-color: #22c55e; }
+
+    /* 關係列表 */
+    .relation-item {
+      background: #0f1117;
+      border: 1px solid #2a2d3e;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .rel-arrow { color: #64748b; }
+    .rel-label { color: #f59e0b; font-size: 11px; }
+
+    /* 診斷結果 */
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 99px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .status-正常 { background: #14532d; color: #4ade80; }
+    .status-警告 { background: #78350f; color: #fbbf24; }
+    .status-錯誤 { background: #7f1d1d; color: #f87171; }
+
+    .diagnosis-text {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #cbd5e1;
+      white-space: pre-wrap;
+    }
+
+    /* 流程進度 */
+    .steps {
+      display: flex;
+      gap: 0;
+      margin-bottom: 20px;
+      background: #0f1117;
+      border-radius: 8px;
+      padding: 4px;
+    }
+    .step {
+      flex: 1;
+      text-align: center;
+      padding: 8px;
+      font-size: 12px;
+      border-radius: 6px;
+      color: #475569;
+      transition: all 0.2s;
+    }
+    .step.active { background: #1e3a5f; color: #60a5fa; }
+    .step.done { color: #4ade80; }
+
+    /* Loading */
+    .loading { display: none; text-align: center; padding: 20px; color: #64748b; font-size: 14px; }
+    .loading.show { display: block; }
+    .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid #2a2d3e; border-top-color: #3b82f6; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px; vertical-align: middle; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .empty { color: #475569; font-size: 13px; text-align: center; padding: 20px; }
+
+    /* 全寬卡片 */
+    .full-width { grid-column: 1 / -1; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>⚡</div>
+  <h1>硬體視覺診斷助手</h1>
+  <span class="badge">GraphRAG</span>
+</header>
+
+<div class="layout">
+
+  <!-- 流程進度 -->
+  <div class="card full-width" style="padding: 12px 20px;">
+    <div class="steps">
+      <div class="step active" id="step-1">① 上傳圖片</div>
+      <div class="step" id="step-2">② YOLO 偵測</div>
+      <div class="step" id="step-3">③ 確認組件</div>
+      <div class="step" id="step-4">④ VLM 提取</div>
+      <div class="step" id="step-5">⑤ 診斷結果</div>
+    </div>
+  </div>
+
+  <!-- 左：上傳 + 預覽 -->
+  <div class="card">
+    <h2>電路圖片</h2>
+
+    <div class="upload-zone" id="upload-zone">
+      <div class="icon">📷</div>
+      <p>點擊或拖曳上傳電路圖片</p>
+      <p style="margin-top:4px; font-size:12px;">支援 JPG、PNG</p>
+      <input type="file" id="file-input" accept="image/*">
+    </div>
+
+    <div id="preview-container">
+      <img id="preview-img" alt="預覽">
+      <canvas id="bbox-canvas"></canvas>
+    </div>
+
+    <button class="btn btn-primary" id="btn-detect" disabled>
+      🔍 執行 YOLO 偵測
+    </button>
+
+    <div class="loading" id="loading-detect">
+      <span class="spinner"></span>YOLO 偵測中...
+    </div>
+  </div>
+
+  <!-- 右：組件確認 -->
+  <div class="card">
+    <h2>組件確認 <span style="color:#475569; font-weight:400; font-size:12px;">（Human-in-the-loop）</span></h2>
+
+    <div id="component-list">
+      <div class="empty">尚未偵測到組件</div>
+    </div>
+
+    <button class="btn btn-success" id="btn-confirm-all" disabled style="margin-top:12px;">
+      ✅ 全部確認
+    </button>
+
+    <button class="btn btn-primary" id="btn-vlm" disabled>
+      🧠 VLM 提取接線關係
+    </button>
+
+    <div class="loading" id="loading-vlm">
+      <span class="spinner"></span>gemma3 分析中，請稍候...
+    </div>
+  </div>
+
+  <!-- 接線關係 -->
+  <div class="card">
+    <h2>接線關係</h2>
+    <div id="relation-list">
+      <div class="empty">尚未提取接線關係</div>
+    </div>
+
+    <button class="btn btn-warning" id="btn-diagnosis" disabled>
+      🩺 執行診斷分析
+    </button>
+
+    <div class="loading" id="loading-diagnosis">
+      <span class="spinner"></span>phi4 診斷中...
+    </div>
+  </div>
+
+  <!-- 診斷結果 -->
+  <div class="card">
+    <h2>診斷結果</h2>
+    <div id="diagnosis-result">
+      <div class="empty">尚未診斷</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const API = "http://localhost:8000";
+
+let state = {
+  imageFile: null,
+  imageId: null,
+  imagePath: null,
+  components: [],
+  relations: [],
+  _objectUrl: null,
+};
+
+// ── 上傳圖片 ──────────────────────────────────────
+const uploadZone = document.getElementById("upload-zone");
+const fileInput = document.getElementById("file-input");
+const previewImg = document.getElementById("preview-img");
+const bboxCanvas = document.getElementById("bbox-canvas");
+
+uploadZone.addEventListener("click", () => fileInput.click());
+uploadZone.addEventListener("dragover", e => { e.preventDefault(); uploadZone.classList.add("dragover"); });
+uploadZone.addEventListener("dragleave", () => uploadZone.classList.remove("dragover"));
+uploadZone.addEventListener("drop", e => {
+  e.preventDefault();
+  uploadZone.classList.remove("dragover");
+  handleFile(e.dataTransfer.files[0]);
+});
+fileInput.addEventListener("change", e => handleFile(e.target.files[0]));
+
+function handleFile(file) {
+  if (!file) return;
+  state.imageFile = file;
+  if (state._objectUrl) URL.revokeObjectURL(state._objectUrl);
+  const url = URL.createObjectURL(file);
+  state._objectUrl = url;
+  previewImg.src = url;
+  previewImg.style.display = "block";
+  previewImg.onload = () => {
+    bboxCanvas.width = previewImg.offsetWidth;
+    bboxCanvas.height = previewImg.offsetHeight;
+  };
+  document.getElementById("btn-detect").disabled = false;
+  setStep(1);
+}
+
+// ── YOLO 偵測 ─────────────────────────────────────
+document.getElementById("btn-detect").addEventListener("click", async () => {
+  const formData = new FormData();
+  formData.append("file", state.imageFile);
+
+  showLoading("detect", true);
+  setStep(2);
+
+  try {
+    const resp = await fetch(`${API}/api/detect/`, { method: "POST", body: formData });
+    if (!resp.ok) throw new Error(await resp.text());
+    const data = await resp.json();
+
+    state.imageId = data.image_id;
+    state.imagePath = data.image_path;
+    state.components = data.components;
+
+    renderComponents();
+    drawBboxes(data.components);
+    setStep(3);
+
+  } catch (e) {
+    alert("YOLO 偵測失敗：" + e.message);
+  } finally {
+    showLoading("detect", false);
+  }
+});
+
+function renderComponents() {
+  const list = document.getElementById("component-list");
+  if (state.components.length === 0) {
+    list.innerHTML = '<div class="empty">未偵測到組件（換個角度拍試試）</div>';
+    return;
+  }
+
+  list.innerHTML = state.components.map((c, i) => `
+    <div class="component-item ${c.confirmed ? 'confirmed' : ''}" id="comp-item-${i}">
+      <span class="comp-id">${c.id}</span>
+      <span class="comp-type">${c.type}</span>
+      <span class="comp-conf">${(c.confidence * 100).toFixed(0)}%</span>
+      <div class="comp-check ${c.confirmed ? 'checked' : ''}" onclick="toggleConfirm(${i})">
+        ${c.confirmed ? '✓' : ''}
+      </div>
+    </div>
+  `).join("");
+
+  document.getElementById("btn-confirm-all").disabled = false;
+  updateVlmButton();
+}
+
+function toggleConfirm(i) {
+  state.components[i].confirmed = !state.components[i].confirmed;
+  renderComponents();
+}
+
+document.getElementById("btn-confirm-all").addEventListener("click", () => {
+  state.components.forEach(c => c.confirmed = true);
+  renderComponents();
+});
+
+function updateVlmButton() {
+  const allConfirmed = state.components.length > 0 && state.components.every(c => c.confirmed);
+  document.getElementById("btn-vlm").disabled = !allConfirmed;
+}
+
+function drawBboxes(components) {
+  const ctx = bboxCanvas.getContext("2d");
+  const scaleX = bboxCanvas.width / previewImg.naturalWidth;
+  const scaleY = bboxCanvas.height / previewImg.naturalHeight;
+
+  ctx.clearRect(0, 0, bboxCanvas.width, bboxCanvas.height);
+
+  components.forEach(c => {
+    const [x1, y1, x2, y2] = c.bbox;
+    ctx.strokeStyle = "#3b82f6";
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x1 * scaleX, y1 * scaleY, (x2 - x1) * scaleX, (y2 - y1) * scaleY);
+
+    ctx.fillStyle = "#3b82f6";
+    ctx.fillRect(x1 * scaleX, y1 * scaleY - 18, 50, 18);
+    ctx.fillStyle = "#fff";
+    ctx.font = "11px sans-serif";
+    ctx.fillText(c.id, x1 * scaleX + 4, y1 * scaleY - 4);
+  });
+}
+
+// ── VLM 提取 ──────────────────────────────────────
+document.getElementById("btn-vlm").addEventListener("click", async () => {
+  showLoading("vlm", true);
+  setStep(4);
+
+  try {
+    const resp = await fetch(`${API}/api/vlm/extract`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        image_path: state.imagePath,
+        components: state.components,
+      })
+    });
+    if (!resp.ok) throw new Error(await resp.text());
+    const data = await resp.json();
+
+    state.relations = data.relations;
+    renderRelations();
+    document.getElementById("btn-diagnosis").disabled = false;
+
+  } catch (e) {
+    alert("VLM 提取失敗：" + e.message);
+  } finally {
+    showLoading("vlm", false);
+  }
+});
+
+function renderRelations() {
+  const list = document.getElementById("relation-list");
+  if (state.relations.length === 0) {
+    list.innerHTML = '<div class="empty">未找到接線關係</div>';
+    return;
+  }
+  list.innerHTML = `<div class="component-list">` + state.relations.map(r => `
+    <div class="relation-item">
+      <span style="color:#60a5fa; font-weight:600;">${r.subject}</span>
+      <span class="rel-arrow">──</span>
+      <span class="rel-label">${r.relation}</span>
+      <span class="rel-arrow">──▶</span>
+      <span style="color:#60a5fa; font-weight:600;">${r.object}</span>
+    </div>
+  `).join("") + `</div>`;
+}
+
+// ── 診斷分析 ──────────────────────────────────────
+document.getElementById("btn-diagnosis").addEventListener("click", async () => {
+  showLoading("diagnosis", true);
+  setStep(5);
+
+  try {
+    const resp = await fetch(`${API}/api/diagnosis/analyze`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        components: state.components,
+        relations: state.relations,
+      })
+    });
+    if (!resp.ok) throw new Error(await resp.text());
+    const data = await resp.json();
+
+    const resultEl = document.getElementById("diagnosis-result");
+    resultEl.innerHTML = `<div class="status-badge status-${data.status}"></div><div class="diagnosis-text"></div>`;
+    resultEl.querySelector(".status-badge").textContent = data.status;
+    resultEl.querySelector(".diagnosis-text").textContent = data.explanation;
+
+  } catch (e) {
+    alert("診斷失敗：" + e.message);
+  } finally {
+    showLoading("diagnosis", false);
+  }
+});
+
+// ── 工具函式 ──────────────────────────────────────
+function showLoading(name, show) {
+  document.getElementById(`loading-${name}`).classList.toggle("show", show);
+}
+
+function setStep(n) {
+  for (let i = 1; i <= 5; i++) {
+    const el = document.getElementById(`step-${i}`);
+    el.classList.remove("active", "done");
+    if (i < n) el.classList.add("done");
+    else if (i === n) el.classList.add("active");
+  }
+}
+</script>
+</body>
+</html>

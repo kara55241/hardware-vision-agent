@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.env
+backend/data/uploads/*
+backend/data/chromadb/*
+*.pt
+node_modules/
+dist/
+.DS_Store
+venv/

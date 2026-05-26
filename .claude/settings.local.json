@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(venv/bin/python -c \"from app.api.routes import detect, vlm, graph, diagnosis; print\\('所有 route 載入成功'\\)\")"
+    ]
+  }
+}
