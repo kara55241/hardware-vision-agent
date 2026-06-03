@@ -9,164 +9,143 @@
     body { font-family: -apple-system, sans-serif; background: #0f1117; color: #e0e0e0; min-height: 100vh; }
 
     header {
-      background: #1a1d27;
-      border-bottom: 1px solid #2a2d3e;
-      padding: 16px 24px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      background: #1a1d27; border-bottom: 1px solid #2a2d3e;
+      padding: 16px 24px; display: flex; align-items: center; gap: 12px;
     }
     header h1 { font-size: 18px; font-weight: 600; color: #fff; }
     header .badge { background: #3b82f6; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 99px; }
 
     .layout { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 20px; max-width: 1400px; margin: 0 auto; }
 
-    .card {
-      background: #1a1d27;
-      border: 1px solid #2a2d3e;
-      border-radius: 12px;
-      padding: 20px;
-    }
-    .card h2 { font-size: 14px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; }
+    .card { background: #1a1d27; border: 1px solid #2a2d3e; border-radius: 12px; padding: 20px; }
+    .card h2 { font-size: 13px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 14px; }
+    .full-width { grid-column: 1 / -1; }
 
-    /* 上傳區 */
-    .upload-zone {
-      border: 2px dashed #2a2d3e;
-      border-radius: 8px;
-      padding: 40px;
-      text-align: center;
-      cursor: pointer;
-      transition: border-color 0.2s;
-    }
-    .upload-zone:hover, .upload-zone.dragover { border-color: #3b82f6; }
-    .upload-zone .icon { font-size: 40px; margin-bottom: 12px; }
-    .upload-zone p { color: #64748b; font-size: 14px; }
-    .upload-zone input { display: none; }
-
-    #preview-img {
-      width: 100%;
-      border-radius: 8px;
-      margin-top: 12px;
-      display: none;
-      position: relative;
-    }
-    #preview-container { position: relative; display: inline-block; width: 100%; }
-    canvas#bbox-canvas {
-      position: absolute;
-      top: 0; left: 0;
-      pointer-events: none;
-    }
-
-    /* 按鈕 */
-    .btn {
-      padding: 10px 20px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 500;
-      transition: opacity 0.2s;
-      width: 100%;
-      margin-top: 12px;
-    }
-    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
-    .btn-primary { background: #3b82f6; color: #fff; }
-    .btn-success { background: #22c55e; color: #fff; }
-    .btn-warning { background: #f59e0b; color: #fff; }
-    .btn-primary:hover:not(:disabled) { opacity: 0.85; }
-    .btn-success:hover:not(:disabled) { opacity: 0.85; }
-
-    /* 組件列表 */
-    .component-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
-    .component-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: #0f1117;
-      border: 1px solid #2a2d3e;
-      border-radius: 8px;
-      padding: 10px 14px;
-    }
-    .component-item.confirmed { border-color: #22c55e; }
-    .comp-id { font-weight: 700; color: #3b82f6; min-width: 40px; font-size: 13px; }
-    .comp-type { flex: 1; font-size: 13px; }
-    .comp-conf { font-size: 11px; color: #64748b; }
-    .comp-check {
-      width: 20px; height: 20px;
-      border-radius: 4px;
-      border: 2px solid #2a2d3e;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 12px;
-      transition: all 0.15s;
-    }
-    .comp-check.checked { background: #22c55e; border-color: #22c55e; }
-
-    /* 關係列表 */
-    .relation-item {
-      background: #0f1117;
-      border: 1px solid #2a2d3e;
-      border-radius: 8px;
-      padding: 10px 14px;
-      font-size: 13px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .rel-arrow { color: #64748b; }
-    .rel-label { color: #f59e0b; font-size: 11px; }
-
-    /* 診斷結果 */
-    .status-badge {
-      display: inline-block;
-      padding: 4px 12px;
-      border-radius: 99px;
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 12px;
-    }
-    .status-正常 { background: #14532d; color: #4ade80; }
-    .status-警告 { background: #78350f; color: #fbbf24; }
-    .status-錯誤 { background: #7f1d1d; color: #f87171; }
-
-    .diagnosis-text {
-      font-size: 14px;
-      line-height: 1.7;
-      color: #cbd5e1;
-      white-space: pre-wrap;
-    }
-
-    /* 流程進度 */
-    .steps {
-      display: flex;
-      gap: 0;
-      margin-bottom: 20px;
-      background: #0f1117;
-      border-radius: 8px;
-      padding: 4px;
-    }
-    .step {
-      flex: 1;
-      text-align: center;
-      padding: 8px;
-      font-size: 12px;
-      border-radius: 6px;
-      color: #475569;
-      transition: all 0.2s;
-    }
+    /* Steps */
+    .steps { display: flex; gap: 0; background: #0f1117; border-radius: 8px; padding: 4px; }
+    .step { flex: 1; text-align: center; padding: 7px 4px; font-size: 11px; border-radius: 6px; color: #475569; transition: all 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .step.active { background: #1e3a5f; color: #60a5fa; }
     .step.done { color: #4ade80; }
 
+    /* Upload */
+    .upload-zone { border: 2px dashed #2a2d3e; border-radius: 8px; padding: 32px; text-align: center; cursor: pointer; transition: border-color 0.2s; }
+    .upload-zone:hover, .upload-zone.dragover { border-color: #3b82f6; }
+    .upload-zone .icon { font-size: 36px; margin-bottom: 10px; }
+    .upload-zone p { color: #64748b; font-size: 13px; }
+    .upload-zone input { display: none; }
+
+    #preview-container { position: relative; display: inline-block; width: 100%; margin-top: 12px; }
+    #preview-img { width: 100%; border-radius: 8px; display: none; }
+    #bbox-canvas { position: absolute; top: 0; left: 0; pointer-events: none; }
+
+    /* Quality badge */
+    .quality-badge { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-top: 10px; }
+    .quality-badge.pass { background: #14532d; color: #4ade80; }
+    .quality-badge.fail { background: #7f1d1d; color: #f87171; }
+
+    /* Buttons */
+    .btn { padding: 9px 18px; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; font-weight: 500; transition: opacity 0.2s; width: 100%; margin-top: 10px; }
+    .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+    .btn-primary { background: #3b82f6; color: #fff; }
+    .btn-success { background: #22c55e; color: #fff; }
+    .btn-warning { background: #f59e0b; color: #fff; }
+    .btn-danger  { background: #ef4444; color: #fff; }
+    .btn-sm { padding: 5px 10px; font-size: 12px; width: auto; margin-top: 0; border-radius: 6px; }
+    .btn:hover:not(:disabled) { opacity: 0.85; }
+
+    /* Component list */
+    .component-list { display: flex; flex-direction: column; gap: 8px; }
+    .component-item { background: #0f1117; border: 1px solid #2a2d3e; border-radius: 8px; padding: 10px 12px; }
+    .component-item.confirmed { border-color: #22c55e; }
+    .comp-row { display: flex; align-items: center; gap: 8px; }
+    .comp-id { font-weight: 700; color: #3b82f6; min-width: 44px; font-size: 13px; }
+    .comp-type { flex: 1; font-size: 13px; }
+    .comp-conf { font-size: 11px; color: #64748b; }
+    .comp-check { width: 20px; height: 20px; border-radius: 4px; border: 2px solid #2a2d3e; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 11px; transition: all 0.15s; flex-shrink: 0; }
+    .comp-check.checked { background: #22c55e; border-color: #22c55e; }
+    .value-row { display: flex; align-items: center; gap: 6px; margin-top: 8px; }
+    .value-row label { font-size: 11px; color: #64748b; white-space: nowrap; }
+    .value-input { background: #1a1d27; border: 1px solid #2a2d3e; color: #e0e0e0; border-radius: 6px; padding: 4px 8px; font-size: 12px; width: 80px; }
+    .value-input:focus { outline: none; border-color: #3b82f6; }
+
+    /* Connections */
+    .connection-row { display: flex; align-items: center; gap: 8px; background: #0f1117; border: 1px solid #2a2d3e; border-radius: 8px; padding: 8px 12px; margin-bottom: 8px; }
+    .conn-select { background: #1a1d27; border: 1px solid #2a2d3e; color: #e0e0e0; border-radius: 6px; padding: 5px 8px; font-size: 12px; flex: 1; }
+    .conn-select:focus { outline: none; border-color: #3b82f6; }
+    .conn-arrow { color: #60a5fa; font-size: 14px; flex-shrink: 0; }
+    .add-conn-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+
+    /* Power buttons */
+    .power-btn-group { display: flex; gap: 10px; margin-top: 4px; }
+    .power-btn { flex: 1; padding: 14px; border-radius: 10px; border: 2px solid #2a2d3e; background: #0f1117; color: #94a3b8; cursor: pointer; font-size: 14px; font-weight: 600; text-align: center; transition: all 0.15s; }
+    .power-btn:hover { border-color: #3b82f6; color: #60a5fa; }
+    .power-btn.selected { border-color: #3b82f6; background: #1e3a5f; color: #60a5fa; }
+    .power-icon { font-size: 28px; display: block; margin-bottom: 6px; }
+
+    /* Diagnosis */
+    .status-badge { display: inline-block; padding: 4px 14px; border-radius: 99px; font-size: 13px; font-weight: 600; margin-bottom: 12px; }
+    .status-正常 { background: #14532d; color: #4ade80; }
+    .status-警告 { background: #78350f; color: #fbbf24; }
+    .status-錯誤 { background: #7f1d1d; color: #f87171; }
+    .diagnosis-text { font-size: 13px; line-height: 1.75; color: #cbd5e1; white-space: pre-wrap; }
+
     /* Loading */
-    .loading { display: none; text-align: center; padding: 20px; color: #64748b; font-size: 14px; }
+    .loading { display: none; text-align: center; padding: 16px; color: #64748b; font-size: 13px; }
     .loading.show { display: block; }
-    .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid #2a2d3e; border-top-color: #3b82f6; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px; vertical-align: middle; }
+    .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid #2a2d3e; border-top-color: #3b82f6; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px; vertical-align: middle; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
     .empty { color: #475569; font-size: 13px; text-align: center; padding: 20px; }
+    .section { display: none; }
+    .section.visible { display: block; }
+    .divider { border: none; border-top: 1px solid #2a2d3e; margin: 14px 0; }
 
-    /* 全寬卡片 */
-    .full-width { grid-column: 1 / -1; }
+    /* Header 重新開始按鈕 */
+    header .btn-reset {
+      margin-left: auto;
+      background: transparent;
+      border: 1px solid #3a3d4e;
+      color: #94a3b8;
+      font-size: 13px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    header .btn-reset:hover { border-color: #ef4444; color: #f87171; }
+
+    /* 圖片操作列 */
+    .img-actions {
+      display: none;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .img-actions.show { display: flex; }
+    .img-btn {
+      background: transparent;
+      border: 1px solid #2a2d3e;
+      color: #94a3b8;
+      font-size: 12px;
+      padding: 5px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .img-btn:hover { border-color: #60a5fa; color: #60a5fa; }
+    .img-btn-danger:hover { border-color: #ef4444; color: #f87171; }
+    .img-btn.active { border-color: #f59e0b; color: #f59e0b; }
+
+    #bbox-canvas.annotating { cursor: crosshair; pointer-events: auto; }
+
+    #annotation-popup {
+      display: none; position: fixed; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: #1a1d27; border: 1px solid #3b82f6;
+      border-radius: 12px; padding: 20px; z-index: 1000; min-width: 260px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+    }
+    #annotation-popup h3 { font-size: 13px; color: #94a3b8; margin-bottom: 12px; }
   </style>
 </head>
 <body>
@@ -175,29 +154,32 @@
   <div>⚡</div>
   <h1>硬體視覺診斷助手</h1>
   <span class="badge">GraphRAG</span>
+  <button class="btn-reset" onclick="resetAll()">↺ 重新開始</button>
 </header>
 
 <div class="layout">
 
   <!-- 流程進度 -->
-  <div class="card full-width" style="padding: 12px 20px;">
+  <div class="card full-width" style="padding:10px 20px;">
     <div class="steps">
       <div class="step active" id="step-1">① 上傳圖片</div>
-      <div class="step" id="step-2">② YOLO 偵測</div>
-      <div class="step" id="step-3">③ 確認組件</div>
-      <div class="step" id="step-4">④ VLM 提取</div>
-      <div class="step" id="step-5">⑤ 診斷結果</div>
+      <div class="step" id="step-2">② 品質檢查</div>
+      <div class="step" id="step-3">③ YOLO偵測</div>
+      <div class="step" id="step-4">④ 確認組件</div>
+      <div class="step" id="step-5">⑤ 手動連線</div>
+      <div class="step" id="step-6">⑥ 選電源</div>
+      <div class="step" id="step-7">⑦ 診斷結果</div>
     </div>
   </div>
 
-  <!-- 左：上傳 + 預覽 -->
+  <!-- 左：圖片 -->
   <div class="card">
     <h2>電路圖片</h2>
 
     <div class="upload-zone" id="upload-zone">
       <div class="icon">📷</div>
       <p>點擊或拖曳上傳電路圖片</p>
-      <p style="margin-top:4px; font-size:12px;">支援 JPG、PNG</p>
+      <p style="margin-top:4px;font-size:11px;color:#334155;">支援 JPG、PNG</p>
       <input type="file" id="file-input" accept="image/*">
     </div>
 
@@ -206,77 +188,102 @@
       <canvas id="bbox-canvas"></canvas>
     </div>
 
-    <button class="btn btn-primary" id="btn-detect" disabled>
-      🔍 執行 YOLO 偵測
-    </button>
-
-    <div class="loading" id="loading-detect">
-      <span class="spinner"></span>YOLO 偵測中...
+    <div class="img-actions" id="img-actions">
+      <button class="img-btn" id="btn-annotate" onclick="toggleAnnotationMode()">✏️ 標註組件</button>
+      <button class="img-btn" id="btn-change-img">🔄 更換圖片</button>
+      <button class="img-btn img-btn-danger" id="btn-remove-img">🗑 移除</button>
     </div>
+
+    <div id="quality-result" style="display:none;"></div>
+
+    <button class="btn btn-primary" id="btn-detect" disabled>🔍 執行偵測</button>
+    <div class="loading" id="loading-detect"><span class="spinner"></span>品質檢查 + YOLO 偵測中...</div>
   </div>
 
-  <!-- 右：組件確認 -->
+  <!-- 右：流程面板 -->
   <div class="card">
-    <h2>組件確認 <span style="color:#475569; font-weight:400; font-size:12px;">（Human-in-the-loop）</span></h2>
 
-    <div id="component-list">
-      <div class="empty">尚未偵測到組件</div>
+    <!-- Section A: 確認組件 + 色環 -->
+    <div class="section" id="section-components">
+      <h2>確認組件 <span style="color:#475569;font-weight:400;font-size:11px;">(Human-in-the-loop)</span></h2>
+      <div id="component-list"><div class="empty">尚未偵測到組件</div></div>
+
+      <button class="btn btn-success" id="btn-confirm-all" disabled style="margin-top:10px;">✅ 全部確認</button>
+      <button class="btn btn-primary" id="btn-to-connections" disabled>➡️ 下一步：設定連線</button>
+      <div class="loading" id="loading-colorband"><span class="spinner"></span>gemma3 讀取色環中...</div>
     </div>
 
-    <button class="btn btn-success" id="btn-confirm-all" disabled style="margin-top:12px;">
-      ✅ 全部確認
-    </button>
+    <!-- Section B: 手動連線 -->
+    <div class="section" id="section-connections">
+      <h2>連線設定</h2>
+      <div id="connection-list"></div>
 
-    <button class="btn btn-primary" id="btn-vlm" disabled>
-      🧠 VLM 提取接線關係
-    </button>
+      <div class="add-conn-row">
+        <select class="conn-select" id="conn-from"></select>
+        <span class="conn-arrow">→</span>
+        <select class="conn-select" id="conn-to"></select>
+        <button class="btn btn-primary btn-sm" onclick="addConnection()">＋ 加入</button>
+      </div>
 
-    <div class="loading" id="loading-vlm">
-      <span class="spinner"></span>gemma3 分析中，請稍候...
+      <button class="btn btn-primary" id="btn-to-power" style="margin-top:16px;">➡️ 下一步：選電源</button>
     </div>
+
+    <!-- Section C: 電源選擇 -->
+    <div class="section" id="section-power">
+      <h2>電源類型</h2>
+      <div class="power-btn-group">
+        <div class="power-btn selected" id="power-arduino" onclick="selectPower('Arduino')">
+          <span class="power-icon">🔌</span>Arduino
+        </div>
+        <div class="power-btn" id="power-battery" onclick="selectPower('battery')">
+          <span class="power-icon">🔋</span>電池
+        </div>
+      </div>
+
+      <hr class="divider">
+      <button class="btn btn-warning" id="btn-submit" onclick="submitCircuit()">🩺 送出診斷</button>
+      <div class="loading" id="loading-submit"><span class="spinner"></span>phi4 診斷中，請稍候...</div>
+    </div>
+
+    <!-- Section D: 診斷結果 -->
+    <div class="section" id="section-result">
+      <h2>診斷結果</h2>
+      <div id="diagnosis-result"><div class="empty">尚未診斷</div></div>
+      <button class="btn btn-primary" onclick="resetAll()" style="margin-top:14px;">🔄 重新開始</button>
+    </div>
+
+    <!-- 預設提示 -->
+    <div id="panel-placeholder" class="empty" style="padding:40px 20px;">上傳圖片並完成偵測後，在此進行組件確認與連線設定</div>
+
   </div>
-
-  <!-- 接線關係 -->
-  <div class="card">
-    <h2>接線關係</h2>
-    <div id="relation-list">
-      <div class="empty">尚未提取接線關係</div>
-    </div>
-
-    <button class="btn btn-warning" id="btn-diagnosis" disabled>
-      🩺 執行診斷分析
-    </button>
-
-    <div class="loading" id="loading-diagnosis">
-      <span class="spinner"></span>phi4 診斷中...
-    </div>
-  </div>
-
-  <!-- 診斷結果 -->
-  <div class="card">
-    <h2>診斷結果</h2>
-    <div id="diagnosis-result">
-      <div class="empty">尚未診斷</div>
-    </div>
-  </div>
-
 </div>
 
 <script>
 const API = "http://localhost:8000";
 
+const PIN_MAP = {
+  resistor: ["pin1", "pin2"],
+  led: ["anode", "cathode"],
+  capacitor: ["+", "-"],
+  transistor: ["base", "collector", "emitter"],
+  diode: ["anode", "cathode"],
+  "zener diode": ["anode", "cathode"],
+};
+
 let state = {
   imageFile: null,
   imageId: null,
   imagePath: null,
-  components: [],
-  relations: [],
   _objectUrl: null,
+  qualityPassed: false,
+  components: [],
+  connections: [],
+  powerType: "Arduino",
 };
 
-// ── 上傳圖片 ──────────────────────────────────────
+// ── 上傳圖片 ───────────────────────────────────────
 const uploadZone = document.getElementById("upload-zone");
-const fileInput = document.getElementById("file-input");
+const fileInput  = document.getElementById("file-input");
 const previewImg = document.getElementById("preview-img");
 const bboxCanvas = document.getElementById("bbox-canvas");
 
@@ -284,11 +291,17 @@ uploadZone.addEventListener("click", () => fileInput.click());
 uploadZone.addEventListener("dragover", e => { e.preventDefault(); uploadZone.classList.add("dragover"); });
 uploadZone.addEventListener("dragleave", () => uploadZone.classList.remove("dragover"));
 uploadZone.addEventListener("drop", e => {
-  e.preventDefault();
-  uploadZone.classList.remove("dragover");
+  e.preventDefault(); uploadZone.classList.remove("dragover");
   handleFile(e.dataTransfer.files[0]);
 });
 fileInput.addEventListener("change", e => handleFile(e.target.files[0]));
+
+document.getElementById("btn-change-img").addEventListener("click", () => {
+  resetAll();
+  fileInput.click();
+});
+
+document.getElementById("btn-remove-img").addEventListener("click", resetAll);
 
 function handleFile(file) {
   if (!file) return;
@@ -299,66 +312,143 @@ function handleFile(file) {
   previewImg.src = url;
   previewImg.style.display = "block";
   previewImg.onload = () => {
-    bboxCanvas.width = previewImg.offsetWidth;
+    bboxCanvas.width  = previewImg.offsetWidth;
     bboxCanvas.height = previewImg.offsetHeight;
   };
+  uploadZone.style.display = "none";
+  document.getElementById("img-actions").classList.add("show");
+  document.getElementById("quality-result").style.display = "none";
   document.getElementById("btn-detect").disabled = false;
   setStep(1);
 }
 
-// ── YOLO 偵測 ─────────────────────────────────────
+// ── YOLO 偵測（含品質檢查）─────────────────────────
 document.getElementById("btn-detect").addEventListener("click", async () => {
-  const formData = new FormData();
-  formData.append("file", state.imageFile);
-
   showLoading("detect", true);
   setStep(2);
 
+  // 1. 先上傳取得 image_path
+  const formData = new FormData();
+  formData.append("file", state.imageFile);
+  let detectData;
   try {
-    const resp = await fetch(`${API}/api/detect/`, { method: "POST", body: formData });
-    if (!resp.ok) throw new Error(await resp.text());
-    const data = await resp.json();
-
-    state.imageId = data.image_id;
-    state.imagePath = data.image_path;
-    state.components = data.components;
-
-    renderComponents();
-    drawBboxes(data.components);
-    setStep(3);
-
+    const r = await fetch(`${API}/api/detect/`, { method: "POST", body: formData });
+    if (!r.ok) throw new Error(await r.text());
+    detectData = await r.json();
   } catch (e) {
-    alert("YOLO 偵測失敗：" + e.message);
-  } finally {
     showLoading("detect", false);
+    return alert("偵測失敗：" + e.message);
   }
+
+  state.imageId   = detectData.image_id;
+  state.imagePath = detectData.image_path;
+
+  // 2. 品質檢查
+  // 品質檢查非阻塞：不等待，讓 YOLO 結果先顯示
+  fetch(`${API}/api/vlm/quality-check`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ image_path: state.imagePath }),
+  }).then(r => r.ok ? r.json() : null).then(qc => {
+    if (qc) { state.qualityPassed = qc.passed; showQualityBadge(qc.passed, qc.feedback); }
+  }).catch(() => { state.qualityPassed = true; });
+
+  showLoading("detect", false);
+  setStep(3);
+
+  // 3. 顯示 YOLO 結果
+  state.components = detectData.components.map(c => ({ ...c, value: "", unit: "Ω" }));
+  drawBboxes(state.components);
+  showSection("components");
+  renderComponents();
+  setStep(4);
 });
 
+function showQualityBadge(passed, feedback) {
+  const el = document.getElementById("quality-result");
+  el.style.display = "block";
+  el.innerHTML = "";
+  const div = document.createElement("div");
+  div.className = "quality-badge " + (passed ? "pass" : "fail");
+  div.textContent = (passed ? "✅ 圖片品質良好" : "⚠️ 圖片品質不佳") + (feedback ? `：${feedback}` : "");
+  el.appendChild(div);
+}
+
+// ── 組件確認 + 色環讀取 ────────────────────────────
 function renderComponents() {
   const list = document.getElementById("component-list");
   if (state.components.length === 0) {
-    list.innerHTML = '<div class="empty">未偵測到組件（換個角度拍試試）</div>';
+    list.innerHTML = '<div class="empty">未偵測到組件（可用手動新增）</div>';
+    document.getElementById("btn-confirm-all").disabled = true;
+    document.getElementById("btn-to-connections").disabled = true;
     return;
   }
 
-  list.innerHTML = state.components.map((c, i) => `
-    <div class="component-item ${c.confirmed ? 'confirmed' : ''}" id="comp-item-${i}">
-      <span class="comp-id">${c.id}</span>
-      <span class="comp-type">${c.type}</span>
-      <span class="comp-conf">${(c.confidence * 100).toFixed(0)}%</span>
-      <div class="comp-check ${c.confirmed ? 'checked' : ''}" onclick="toggleConfirm(${i})">
-        ${c.confirmed ? '✓' : ''}
+  const TYPE_ZH = { resistor:"電阻", led:"LED", capacitor:"電容", transistor:"電晶體", diode:"二極體", ic:"IC" };
+
+  list.innerHTML = state.components.map((c, i) => {
+    const isResistor = c.type.toLowerCase().includes("resistor");
+    return `
+    <div class="component-item ${c.confirmed ? "confirmed" : ""}" id="comp-item-${i}">
+      <div class="comp-row">
+        <span class="comp-id">${c.id}</span>
+        <select class="conn-select" style="flex:1;font-size:12px;padding:3px 6px;"
+          onchange="state.components[${i}].type = this.value; renderComponents();">
+          ${[["resistor","電阻"],["led","LED"],["capacitor","電容"],["transistor","電晶體"],["diode","二極體"],["ic","IC"]].map(([v,l]) =>
+            `<option value="${v}" ${c.type === v ? "selected" : ""}>${l}</option>`
+          ).join("")}
+        </select>
+        <span class="comp-conf">${(c.confidence * 100).toFixed(0)}%</span>
+        <div class="comp-check ${c.confirmed ? "checked" : ""}" onclick="toggleConfirm(${i})">${c.confirmed ? "✓" : ""}</div>
+        <button class="btn btn-danger btn-sm" onclick="deleteComponent(${i})" style="padding:3px 7px;">✕</button>
       </div>
+      ${isResistor ? `
+      <div class="value-row">
+        <label>電阻值：</label>
+        <input class="value-input" type="text" value="${c.value}" placeholder="220"
+          onchange="state.components[${i}].value = this.value"
+          id="value-input-${i}">
+        <span style="font-size:12px;color:#64748b;">Ω</span>
+        <button class="btn btn-primary btn-sm" onclick="readColorBand(${i})">🔍 色環</button>
+      </div>` : ""}
+    </div>`;
+  }).join("");
+
+  // 手動新增組件
+  list.innerHTML += `
+  <div style="margin-top:10px;">
+    <div style="display:flex;gap:6px;align-items:center;">
+      <input id="manual-id" class="value-input" placeholder="R2" style="width:60px;">
+      <select id="manual-type" class="conn-select" style="flex:1;">
+        <option value="resistor">電阻</option>
+        <option value="led">LED</option>
+        <option value="capacitor">電容</option>
+        <option value="transistor">電晶體</option>
+        <option value="diode">二極體</option>
+      </select>
+      <button class="btn btn-primary btn-sm" onclick="addManualComponent()">＋</button>
     </div>
-  `).join("");
+  </div>`;
 
   document.getElementById("btn-confirm-all").disabled = false;
-  updateVlmButton();
+  updateConnectionsButton();
 }
 
 function toggleConfirm(i) {
+  // 先把正在輸入的 value 存回 state，避免重繪時遺失
+  const input = document.getElementById(`value-input-${i}`);
+  if (input) state.components[i].value = input.value;
+
   state.components[i].confirmed = !state.components[i].confirmed;
-  renderComponents();
+  const confirmed = state.components[i].confirmed;
+
+  const itemEl = document.getElementById(`comp-item-${i}`);
+  itemEl.classList.toggle("confirmed", confirmed);
+  const checkEl = itemEl.querySelector(".comp-check");
+  checkEl.classList.toggle("checked", confirmed);
+  checkEl.textContent = confirmed ? "✓" : "";
+
+  updateConnectionsButton();
 }
 
 document.getElementById("btn-confirm-all").addEventListener("click", () => {
@@ -366,105 +456,279 @@ document.getElementById("btn-confirm-all").addEventListener("click", () => {
   renderComponents();
 });
 
-function updateVlmButton() {
+function updateConnectionsButton() {
   const allConfirmed = state.components.length > 0 && state.components.every(c => c.confirmed);
-  document.getElementById("btn-vlm").disabled = !allConfirmed;
+  document.getElementById("btn-to-connections").disabled = !allConfirmed;
 }
 
-function drawBboxes(components) {
-  const ctx = bboxCanvas.getContext("2d");
-  const scaleX = bboxCanvas.width / previewImg.naturalWidth;
-  const scaleY = bboxCanvas.height / previewImg.naturalHeight;
-
-  ctx.clearRect(0, 0, bboxCanvas.width, bboxCanvas.height);
-
-  components.forEach(c => {
-    const [x1, y1, x2, y2] = c.bbox;
-    ctx.strokeStyle = "#3b82f6";
-    ctx.lineWidth = 2;
-    ctx.strokeRect(x1 * scaleX, y1 * scaleY, (x2 - x1) * scaleX, (y2 - y1) * scaleY);
-
-    ctx.fillStyle = "#3b82f6";
-    ctx.fillRect(x1 * scaleX, y1 * scaleY - 18, 50, 18);
-    ctx.fillStyle = "#fff";
-    ctx.font = "11px sans-serif";
-    ctx.fillText(c.id, x1 * scaleX + 4, y1 * scaleY - 4);
-  });
-}
-
-// ── VLM 提取 ──────────────────────────────────────
-document.getElementById("btn-vlm").addEventListener("click", async () => {
-  showLoading("vlm", true);
-  setStep(4);
-
+async function readColorBand(i) {
+  const comp = state.components[i];
+  showLoading("colorband", true);
   try {
-    const resp = await fetch(`${API}/api/vlm/extract`, {
+    const r = await fetch(`${API}/api/vlm/color-band`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         image_path: state.imagePath,
-        components: state.components,
-      })
+        resistor_id: comp.id,
+        bbox: comp.bbox,
+      }),
     });
-    if (!resp.ok) throw new Error(await resp.text());
-    const data = await resp.json();
-
-    state.relations = data.relations;
-    renderRelations();
-    document.getElementById("btn-diagnosis").disabled = false;
-
+    if (!r.ok) throw new Error(await r.text());
+    const data = await r.json();
+    state.components[i].value = data.value;
+    state.components[i].unit  = data.unit || "Ω";
+    const input = document.getElementById(`value-input-${i}`);
+    if (input) input.value = data.value;
   } catch (e) {
-    alert("VLM 提取失敗：" + e.message);
+    alert("色環讀取失敗：" + e.message);
   } finally {
-    showLoading("vlm", false);
+    showLoading("colorband", false);
   }
-});
-
-function renderRelations() {
-  const list = document.getElementById("relation-list");
-  if (state.relations.length === 0) {
-    list.innerHTML = '<div class="empty">未找到接線關係</div>';
-    return;
-  }
-  list.innerHTML = `<div class="component-list">` + state.relations.map(r => `
-    <div class="relation-item">
-      <span style="color:#60a5fa; font-weight:600;">${r.subject}</span>
-      <span class="rel-arrow">──</span>
-      <span class="rel-label">${r.relation}</span>
-      <span class="rel-arrow">──▶</span>
-      <span style="color:#60a5fa; font-weight:600;">${r.object}</span>
-    </div>
-  `).join("") + `</div>`;
 }
 
-// ── 診斷分析 ──────────────────────────────────────
-document.getElementById("btn-diagnosis").addEventListener("click", async () => {
-  showLoading("diagnosis", true);
+function deleteComponent(i) {
+  state.components.splice(i, 1);
+  renderComponents();
+  drawBboxes(state.components);
+}
+
+function addManualComponent() {
+  const id   = document.getElementById("manual-id").value.trim();
+  const type = document.getElementById("manual-type").value;
+  if (!id) return alert("請輸入組件 ID");
+  state.components.push({ id, type, bbox: [0,0,0,0], confidence: 1, confirmed: true, value: "", unit: "Ω" });
+  renderComponents();
+}
+
+document.getElementById("btn-to-connections").addEventListener("click", () => {
+  showSection("connections");
+  refreshPinSelects();
   setStep(5);
+});
+
+// ── 連線設定 ──────────────────────────────────────
+function getPinOptions() {
+  const pins = [];
+  if (state.powerType === "Arduino") {
+    ["D13","D12","D11","D9","5V","3V3","GND"].forEach(p => pins.push(`Arduino.${p}`));
+  } else {
+    pins.push("Battery.+", "Battery.-");
+  }
+  state.components.forEach(c => {
+    const type  = c.type.toLowerCase();
+    const pList = PIN_MAP[type] || ["pin1", "pin2"];
+    pList.forEach(p => pins.push(`${c.id}.${p}`));
+  });
+  pins.push("GND", "VCC");
+  return pins;
+}
+
+function refreshPinSelects() {
+  const opts = getPinOptions().map(p => `<option value="${p}">${p}</option>`).join("");
+  document.getElementById("conn-from").innerHTML = opts;
+  document.getElementById("conn-to").innerHTML   = opts;
+  renderConnections();
+}
+
+function renderConnections() {
+  const list = document.getElementById("connection-list");
+  if (state.connections.length === 0) {
+    list.innerHTML = '<div class="empty" style="padding:12px;">尚未設定連線</div>';
+    return;
+  }
+  list.innerHTML = state.connections.map((c, i) => `
+    <div class="connection-row">
+      <span style="color:#60a5fa;font-size:13px;font-weight:600;">${c.from_node}</span>
+      <span class="conn-arrow">→</span>
+      <span style="color:#60a5fa;font-size:13px;font-weight:600;">${c.to_node}</span>
+      <button class="btn btn-danger btn-sm" onclick="removeConnection(${i})" style="margin-left:auto;">✕</button>
+    </div>`).join("");
+}
+
+function addConnection() {
+  const from = document.getElementById("conn-from").value;
+  const to   = document.getElementById("conn-to").value;
+  if (from === to) return alert("起點和終點不能相同");
+  state.connections.push({ from_node: from, to_node: to });
+  renderConnections();
+}
+
+function removeConnection(i) {
+  state.connections.splice(i, 1);
+  renderConnections();
+}
+
+document.getElementById("btn-to-power").addEventListener("click", () => {
+  if (state.connections.length === 0 && !confirm("尚未設定連線，確定繼續？")) return;
+  showSection("power");
+  setStep(6);
+});
+
+// ── 電源選擇 ──────────────────────────────────────
+function selectPower(type) {
+  state.powerType = type;
+  document.getElementById("power-arduino").classList.toggle("selected", type === "Arduino");
+  document.getElementById("power-battery").classList.toggle("selected", type === "battery");
+  if (document.getElementById("section-connections").classList.contains("visible")) {
+    refreshPinSelects();
+  }
+}
+
+// ── 送出診斷 ──────────────────────────────────────
+async function submitCircuit() {
+  showLoading("submit", true);
+  setStep(7);
 
   try {
-    const resp = await fetch(`${API}/api/diagnosis/analyze`, {
+    const r = await fetch(`${API}/api/circuit/build`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        components: state.components,
-        relations: state.relations,
-      })
+        image_id:    state.imageId,
+        components:  state.components,
+        connections: state.connections,
+        power_type:  state.powerType,
+      }),
     });
-    if (!resp.ok) throw new Error(await resp.text());
-    const data = await resp.json();
+    if (!r.ok) throw new Error(await r.text());
+    const data = await r.json();
 
-    const resultEl = document.getElementById("diagnosis-result");
-    resultEl.innerHTML = `<div class="status-badge status-${data.status}"></div><div class="diagnosis-text"></div>`;
-    resultEl.querySelector(".status-badge").textContent = data.status;
-    resultEl.querySelector(".diagnosis-text").textContent = data.explanation;
+    showSection("result");
+    const el = document.getElementById("diagnosis-result");
+    const badge = document.createElement("div");
+    badge.className = `status-badge status-${data.status}`;
+    badge.textContent = data.status;
+    const text = document.createElement("div");
+    text.className = "diagnosis-text";
+    text.textContent = data.explanation;
+    el.innerHTML = "";
+    el.appendChild(badge);
+    el.appendChild(text);
 
   } catch (e) {
     alert("診斷失敗：" + e.message);
   } finally {
-    showLoading("diagnosis", false);
+    showLoading("submit", false);
   }
+}
+
+// ── 重置 ──────────────────────────────────────────
+function resetAll() {
+  if (state._objectUrl) URL.revokeObjectURL(state._objectUrl);
+  state = { imageFile: null, imageId: null, imagePath: null, _objectUrl: null,
+            qualityPassed: false, components: [], connections: [], powerType: "Arduino" };
+  fileInput.value = "";
+  previewImg.style.display = "none";
+  previewImg.src = "";
+  uploadZone.style.display = "";
+  document.getElementById("img-actions").classList.remove("show");
+  bboxCanvas.getContext("2d").clearRect(0, 0, bboxCanvas.width, bboxCanvas.height);
+  document.getElementById("quality-result").style.display = "none";
+  document.getElementById("btn-detect").disabled = true;
+  document.getElementById("diagnosis-result").innerHTML = '<div class="empty">尚未診斷</div>';
+  showSection(null);
+  setStep(1);
+}
+
+// ── 圖片標註 ──────────────────────────────────────
+let annotating = false;
+let annotateStart = null;
+let pendingBbox = null;
+
+function toggleAnnotationMode() {
+  annotating = !annotating;
+  bboxCanvas.classList.toggle("annotating", annotating);
+  const btn = document.getElementById("btn-annotate");
+  btn.textContent = annotating ? "✏️ 結束標註" : "✏️ 標註組件";
+  btn.classList.toggle("active", annotating);
+  if (!annotating) drawBboxes(state.components);
+}
+
+function getCanvasPos(e) {
+  const rect = bboxCanvas.getBoundingClientRect();
+  return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+}
+
+function displayToNatural(x, y) {
+  const scaleX = previewImg.naturalWidth  / bboxCanvas.width;
+  const scaleY = previewImg.naturalHeight / bboxCanvas.height;
+  return [Math.round(x * scaleX), Math.round(y * scaleY)];
+}
+
+bboxCanvas.addEventListener("mousedown", e => {
+  if (!annotating) return;
+  annotateStart = getCanvasPos(e);
 });
+
+bboxCanvas.addEventListener("mousemove", e => {
+  if (!annotating || !annotateStart) return;
+  const cur = getCanvasPos(e);
+  drawBboxes(state.components);
+  const ctx = bboxCanvas.getContext("2d");
+  ctx.setLineDash([5, 3]);
+  ctx.strokeStyle = "#f59e0b"; ctx.lineWidth = 2;
+  ctx.strokeRect(annotateStart.x, annotateStart.y,
+                 cur.x - annotateStart.x, cur.y - annotateStart.y);
+  ctx.setLineDash([]);
+});
+
+bboxCanvas.addEventListener("mouseup", e => {
+  if (!annotating || !annotateStart) return;
+  const end = getCanvasPos(e);
+  if (Math.abs(end.x - annotateStart.x) < 10 || Math.abs(end.y - annotateStart.y) < 10) {
+    annotateStart = null; return;
+  }
+  pendingBbox = { start: annotateStart, end };
+  annotateStart = null;
+  document.getElementById("anno-id").value = "";
+  document.getElementById("annotation-popup").style.display = "block";
+});
+
+function confirmAnnotation() {
+  const id   = document.getElementById("anno-id").value.trim();
+  const type = document.getElementById("anno-type").value;
+  if (!id) return alert("請輸入組件 ID");
+  const { start, end } = pendingBbox;
+  const [x1, y1] = displayToNatural(Math.min(start.x, end.x), Math.min(start.y, end.y));
+  const [x2, y2] = displayToNatural(Math.max(start.x, end.x), Math.max(start.y, end.y));
+  state.components.push({ id, type, bbox: [x1, y1, x2, y2], confidence: 1,
+                          confirmed: true, value: "", unit: "Ω", manual: true });
+  renderComponents();
+  drawBboxes(state.components);
+  closeAnnotationPopup();
+  updateConnectionsButton();
+  showSection("components");
+}
+
+function cancelAnnotation() {
+  drawBboxes(state.components);
+  closeAnnotationPopup();
+}
+
+function closeAnnotationPopup() {
+  document.getElementById("annotation-popup").style.display = "none";
+  pendingBbox = null;
+}
+
+// ── Bbox 繪製 ─────────────────────────────────────
+function drawBboxes(components) {
+  const ctx    = bboxCanvas.getContext("2d");
+  const scaleX = bboxCanvas.width  / previewImg.naturalWidth;
+  const scaleY = bboxCanvas.height / previewImg.naturalHeight;
+  ctx.clearRect(0, 0, bboxCanvas.width, bboxCanvas.height);
+  components.forEach(c => {
+    if (!c.bbox || c.bbox.every(v => v === 0)) return;
+    const [x1, y1, x2, y2] = c.bbox;
+    const color = c.manual ? "#f59e0b" : "#3b82f6";
+    ctx.strokeStyle = color; ctx.lineWidth = 2;
+    ctx.strokeRect(x1*scaleX, y1*scaleY, (x2-x1)*scaleX, (y2-y1)*scaleY);
+    ctx.fillStyle = color;
+    ctx.fillRect(x1*scaleX, y1*scaleY - 18, 50, 18);
+    ctx.fillStyle = "#fff"; ctx.font = "11px sans-serif";
+    ctx.fillText(c.id, x1*scaleX + 4, y1*scaleY - 4);
+  });
+}
 
 // ── 工具函式 ──────────────────────────────────────
 function showLoading(name, show) {
@@ -472,13 +736,39 @@ function showLoading(name, show) {
 }
 
 function setStep(n) {
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= 7; i++) {
     const el = document.getElementById(`step-${i}`);
     el.classList.remove("active", "done");
     if (i < n) el.classList.add("done");
     else if (i === n) el.classList.add("active");
   }
 }
+
+function showSection(name) {
+  document.getElementById("panel-placeholder").style.display = name ? "none" : "block";
+  ["components", "connections", "power", "result"].forEach(s => {
+    document.getElementById(`section-${s}`).classList.toggle("visible", s === name);
+  });
+}
 </script>
+
+<div id="annotation-popup">
+  <h3>框選的組件資訊</h3>
+  <div style="display:flex;gap:6px;margin-bottom:12px;">
+    <input id="anno-id" class="value-input" placeholder="R2" style="width:70px;">
+    <select id="anno-type" class="conn-select" style="flex:1;">
+      <option value="resistor">電阻</option>
+      <option value="led">LED</option>
+      <option value="capacitor">電容</option>
+      <option value="transistor">電晶體</option>
+      <option value="diode">二極體</option>
+    </select>
+  </div>
+  <div style="display:flex;gap:6px;">
+    <button class="btn btn-primary btn-sm" onclick="confirmAnnotation()" style="flex:1;">確認</button>
+    <button class="btn btn-sm" onclick="cancelAnnotation()" style="flex:1;background:#2a2d3e;color:#94a3b8;">取消</button>
+  </div>
+</div>
+
 </body>
 </html>

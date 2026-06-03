@@ -9,15 +9,32 @@ class DetectedComponent(ComponentBase):
     bbox: List[float]
     confidence: float
     confirmed: bool = False
+    value: str = ""
+    unit: str = ""
 
 class Relation(BaseModel):
     subject: str
     relation: str
     object: str
 
-class TripleOutput(BaseModel):
+class Connection(BaseModel):
+    from_node: str
+    to_node: str
+
+class CircuitData(BaseModel):
+    image_id: str
     components: List[DetectedComponent]
-    relations: List[Relation]
+    connections: List[Connection]
+    power_type: str
+
+class QualityCheckResult(BaseModel):
+    passed: bool
+    feedback: str
+
+class ColorBandResult(BaseModel):
+    resistor_id: str
+    value: str
+    unit: str
 
 class DiagnosisResult(BaseModel):
     status: str

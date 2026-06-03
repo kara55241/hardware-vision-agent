@@ -1,7 +1,14 @@
 {
   "permissions": {
     "allow": [
-      "Bash(venv/bin/python -c \"from app.api.routes import detect, vlm, graph, diagnosis; print\\('所有 route 載入成功'\\)\")"
+      "Bash(venv/bin/python -c \"from app.api.routes import detect, vlm, graph, diagnosis; print\\('所有 route 載入成功'\\)\")",
+      "Bash(python3 -c ' *)",
+      "Bash(venv/bin/python -c \"from app.api.routes import detect, vlm, graph, diagnosis, circuit; print\\('所有 route 載入成功'\\)\")",
+      "Bash(venv/bin/python -c \"from app.api.routes import vlm, circuit; print\\('import OK'\\)\")",
+      "Bash(venv/bin/uvicorn main:app --reload --port 8000)",
+      "Bash(curl -s http://localhost:8000/)",
+      "Bash(pkill -f \"uvicorn main:app\")",
+      "Bash(venv/bin/python -c ' *)"
     ]
   }
 }
